@@ -1,7 +1,7 @@
 package service
 
 import (
-	"entity"
+	"github.com/tr3tiak/avito_backend/internal/entity"
 )
 
 type Repo interface {
@@ -28,7 +28,7 @@ func NewService(repo Repo) Service {
 func (s *myService) Post(adv *entity.Adv) error {
 	return s.repo.Post(adv)
 }
-func (s *myService) Get(id int) {
+func (s *myService) Get(id int) (*entity.Adv, error) {
 	return s.repo.Get(id)
 }
 func (s *myService) GetPage(orderBy string) (*[]entity.Adv, error) {

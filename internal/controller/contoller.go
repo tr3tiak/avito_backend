@@ -2,13 +2,18 @@ package controller
 
 import (
 	"encoding/json"
-	"entity"
 	"net/http"
-	"service"
+
+	"github.com/tr3tiak/avito_backend/internal/entity"
+	"github.com/tr3tiak/avito_backend/internal/service"
 )
 
 type Controller struct {
 	s service.Service
+}
+
+func NewController(s service.Service) *Controller {
+	return &Controller{s: s}
 }
 
 func (c *Controller) HandlerPost(w http.ResponseWriter, r *http.Request) {
