@@ -1,5 +1,7 @@
 package entity
 
+import "os"
+
 type Config struct {
 	UserDB     string
 	PasswordDB string
@@ -9,9 +11,9 @@ type Config struct {
 
 func NewConfig() *Config {
 	Conf := Config{
-		UserDB:     "Alexander",
-		PasswordDB: "3u0wowLTSY",
-		NameDB:     "ads",
+		UserDB:     os.Getenv("user_db"),
+		PasswordDB: os.Getenv("password_db"),
+		NameDB:     os.Getenv("name_db"),
 		Port:       "8080",
 	}
 	return &Conf
