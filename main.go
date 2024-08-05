@@ -21,5 +21,6 @@ func main() {
 
 	r.HandleFunc("/post", controller.HandlerPost)
 	r.HandleFunc("/get", controller.HandlerGet)
+	r.HandleFunc("/get_page", controller.HandlerGetPage)
 	http.ListenAndServe("localhost:8080", r)
 }

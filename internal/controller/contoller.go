@@ -59,3 +59,24 @@ func (c *Controller) HandlerGet(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 
 }
+
+func (c *Controller) HandlerGetPage(w http.ResponseWriter, r *http.Request) {
+	data := make(map[string]interface{})
+	err := json.NewDecoder(r.Body).Decode(&data)
+	if err != nil {
+		panic(err)
+	}
+	orderBy := data["orderBy"].(string)
+	adv, err := c.s.GetPage(orderBy)
+	if err != nil {
+		panic(err)
+	}
+	response, err := json.Marshal(adv)
+	if err != nil {
+		panic(err)
+	}
+	w.Header().Set("Content-Type", "text/plain")
+	w.Write(response)
+	w.WriteHeader(http.StatusOK)
+
+}

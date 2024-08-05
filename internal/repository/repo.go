@@ -56,9 +56,9 @@ func (repo *myRepo) GetPage(orderBy string) (*[]entity.Adv, error) {
 	var advList []entity.Adv
 	switch orderBy {
 	case "asc":
-		rows, err = repo.db.Query("SELECT * FROM ads ORDER BY name ASC")
+		rows, err = repo.db.Query("SELECT * FROM ads ORDER BY name ASC LIMIT 10")
 	case "desc":
-		rows, err = repo.db.Query("SELECT * FROM ads ORDER BY name DESC")
+		rows, err = repo.db.Query("SELECT * FROM ads ORDER BY name DESC LIMIT 10")
 	}
 	if err != nil {
 		return nil, err
@@ -66,7 +66,7 @@ func (repo *myRepo) GetPage(orderBy string) (*[]entity.Adv, error) {
 	defer rows.Close()
 	for i := 0; i < 10 && rows.Next(); i++ {
 		var Adv entity.Adv
-		err := rows.Scan(&Adv.Name, &Adv.Description)
+		err := rows.Scan(&Adv.Id, &Adv.Name, &Adv.Description)
 		if err != nil {
 			return nil, err
 		}
