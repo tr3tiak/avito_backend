@@ -32,21 +32,18 @@ func (repo *myRepo) Post(adv *entity.Adv) error {
 	return nil
 }
 
-func (repo *myRepo) Get(id int, orderBy string) (*entity.Adv, error) {
+func (repo *myRepo) Get(id int) (*entity.Adv, error) {
 	var row *sql.Rows
 	var err error
-	switch orderBy {
-	case "asc":
-		row, err = repo.db.Query("SELECT id, Name, Description FROM ads WHERE id = ?", id)
-	case "desc":
-		row, err = repo.db.Query("SELECT id, Name, Description FROM ads WHERE id = ?", id)
-	}
+
+	row, err = repo.db.Query("SELECT id, Name, Description FROM ads WHERE id = ?", id)
 
 	if err != nil {
 		return nil, err
 	}
 	var Adv entity.Adv
-	err = row.Scan(&Adv.Name, &Adv.Description)
+	row.Next()
+	err = row.Scan(&Adv.Id, &Adv.Name, &Adv.Description)
 	if err != nil {
 		return nil, err
 	}

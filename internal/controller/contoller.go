@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"strconv"
 
 	"github.com/tr3tiak/avito_backend/internal/entity"
 	"github.com/tr3tiak/avito_backend/internal/service"
@@ -40,9 +41,12 @@ func (c *Controller) HandlerGet(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		panic(err)
 	}
-	id := data["id"]
-	orderBy := data["orderBy"]
-	adv, err := c.s.Get(id.(int), orderBy.(string))
+	id, err := strconv.Atoi(data["id"].(string))
+	if err != nil {
+		fmt.Println("Ошибка при преобразовании строки в число:", err)
+		return
+	}
+	adv, err := c.s.Get(id)
 	if err != nil {
 		panic(err)
 	}

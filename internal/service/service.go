@@ -14,7 +14,7 @@ type Repo interface {
 
 type Service interface {
 	Post(*entity.Adv) error
-	Get(int, string) (*entity.Adv, error)
+	Get(int) (*entity.Adv, error)
 	GetPage(string) (*[]entity.Adv, error)
 }
 
@@ -31,7 +31,7 @@ func (s *myService) Post(adv *entity.Adv) error {
 	fmt.Println("repo started")
 	return s.repo.Post(adv)
 }
-func (s *myService) Get(id int, orderBy string) (*entity.Adv, error) {
+func (s *myService) Get(id int) (*entity.Adv, error) {
 	return s.repo.Get(id)
 }
 func (s *myService) GetPage(orderBy string) (*[]entity.Adv, error) {

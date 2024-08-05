@@ -20,6 +20,6 @@ func main() {
 	r := mux.NewRouter()
 
 	r.HandleFunc("/post", controller.HandlerPost)
-	r.HandleFunc("/get/id:[0-9]+", controller.HandlerGet)
+	r.HandleFunc("/get", controller.HandlerGet)
 	http.ListenAndServe("localhost:8080", r)
 }
