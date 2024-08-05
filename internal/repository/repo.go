@@ -2,7 +2,9 @@ package repository
 
 import (
 	"database/sql"
+	"fmt"
 
+	_ "github.com/go-sql-driver/mysql"
 	"github.com/tr3tiak/avito_backend/internal/entity"
 )
 
@@ -12,6 +14,7 @@ type myRepo struct {
 
 func NewRepo() *myRepo {
 	conf := entity.NewConfig()
+	fmt.Println(conf.NameDB, conf.PasswordDB, conf.UserDB)
 	db, err := sql.Open("mysql", conf.UserDB+":"+conf.PasswordDB+"@/"+conf.NameDB)
 	if err != nil {
 		panic(err)
@@ -21,15 +24,24 @@ func NewRepo() *myRepo {
 }
 
 func (repo *myRepo) Post(adv *entity.Adv) error {
-	_, err := repo.db.Exec("INSERT INTO adv (name, description) VALUES (?, ?)", adv.Name, adv.Description)
+	fmt.Println("post started")
+	_, err := repo.db.Exec("INSERT ads(Name, Description) VALUES (?, ?)", adv.Name, adv.Description)
 	if err != nil {
 		return err
 	}
 	return nil
 }
 
-func (repo *myRepo) Get(id int) (*entity.Adv, error) {
-	row, err := repo.db.Query("SELECT name, description FROM ads WHERE id = ?", id)
+func (repo *myRepo) Get(id int, orderBy string) (*entity.Adv, error) {
+	var row *sql.Rows
+	var err error
+	switch orderBy {
+	case "asc":
+		row, err = repo.db.Query("SELECT id, Name, Description FROM ads WHERE id = ?", id)
+	case "desc":
+		row, err = repo.db.Query("SELECT id, Name, Description FROM ads WHERE id = ?", id)
+	}
+
 	if err != nil {
 		return nil, err
 	}
@@ -47,9 +59,9 @@ func (repo *myRepo) GetPage(orderBy string) (*[]entity.Adv, error) {
 	var advList []entity.Adv
 	switch orderBy {
 	case "asc":
-		rows, err = repo.db.Query("SELECT * FROM adv ORDER BY name ASC")
+		rows, err = repo.db.Query("SELECT * FROM ads ORDER BY name ASC")
 	case "desc":
-		rows, err = repo.db.Query("SELECT * FROM adv ORDER BY name DESC")
+		rows, err = repo.db.Query("SELECT * FROM ads ORDER BY name DESC")
 	}
 	if err != nil {
 		return nil, err
